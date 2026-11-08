@@ -28,7 +28,7 @@ export function Discover() {
   const [q, setQ] = useState('');
   const [term, setTerm] = useState('');
   useEffect(() => {
-    const t = setTimeout(() => setTerm(q.trim()), 250);
+    const t = setTimeout(() => setTerm(q.trim()), 120);
     return () => clearTimeout(t);
   }, [q]);
 
@@ -40,7 +40,7 @@ export function Discover() {
     <div className="page">
       <div className="page-head">
         <div>
-          <h1>Discover</h1>
+          <h1>Markets</h1>
           <p>What insiders are doing, themes worth knowing, and every company explained in plain English.</p>
         </div>
       </div>

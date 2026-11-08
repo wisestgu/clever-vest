@@ -2,6 +2,8 @@
 
 Mode: **Operate.** Users come to Dollo to get a job done, so navigation, controls and layout are the standard ones a fintech user already knows. The visual world lends four things only: type, palette, density and one signature move.
 
+Two design skills shape the UI. [impeccable](https://github.com/pbakaus/impeccable) sets the visual world, the craft floor and the Operate-mode restraint. [apple-design](https://github.com/emilkowalski/skills/blob/main/skills/apple-design/SKILL.md) (Apple's WWDC fluid-interface guidance, translated for the web) sets how the UI moves, responds and layers. See *Feel* below.
+
 ## World: Adire indigo
 
 The palette comes from adire, the indigo resist-dyed cloth of Abeokuta. The deep indigo shell carries the brand: side rail, mobile top bar, home band and welcome panel. The content ground is a cool, faintly indigo-tinted grey rather than white or cream. Brass, like the thread and gold worn with indigo, marks earned value and the primary path in: the Deposit button, Learn-to-earn rewards and the money route.
@@ -40,9 +42,33 @@ Defined in `frontend/src/styles/tokens.css`. Light and dark themes are each chos
 - **Motion:** 140–250ms with exponential ease-out, used only for state (hover, selection, confirmations, the flowing route). `prefers-reduced-motion` is respected.
 - **Browser surfaces:** focus ring, selection colour, caret, accent colour and scrollbars are themed from the palette.
 
+## Feel (apple-design layer)
+
+- **Springs, not durations.** `frontend/src/lib/motion.ts` defines Apple's damping/response pairs for Motion. UI motion is critically damped (`ui` 1.0/0.4, `snappy` 1.0/0.3). Bounce is used only after a gesture that carried momentum (`sheet` 0.8/0.3, `flick` about 0.8/0.35).
+- **Respond on press.** Buttons scale to 0.97, chips to 0.95 and tab icons to 0.88 on pointer-down, in 100ms. `touch-action: manipulation` removes the tap delay. Withdraw shows a naira estimate from the last known rate on every keystroke, and the exact server quote replaces it a moment later.
+- **Trade sheet on phones** (`components/Sheet.tsx`):
+  - The sheet tracks the finger 1:1 from the grab point, with pointer capture.
+  - Pulling past the top meets Apple's rubber-band resistance.
+  - On release, the momentum projection (`v/1000 · d/(1−d)`, d = 0.998) decides between dismissing and springing back.
+  - The release velocity is handed to the spring.
+  - The sheet can be grabbed again mid-flight.
+  - The scrim opacity follows the sheet's position continuously.
+  - Escape and scrim taps dismiss it, and focus returns to the button that opened it.
+- **Swipeable lessons:** cards drag horizontally, use momentum projection to choose next or back, and rubber-band at the first card. Cards enter from the side they come from and leave the way they came. A card on its way out can't be clicked.
+- **Segmented controls** (`components/motion.tsx`) are iOS-style: a thumb slides between options on a spring, and the control is a real radio group or tablist with arrow-key support.
+- **Rolling numbers:** the portfolio total and the money-route amounts spring from their on-screen value to the new one. A second change mid-roll continues smoothly.
+- **Materials:** the mobile top bar is heavy indigo glass (92%), because it is structural. The tab bar and trade bar are light glass with content scrolling beneath, edged with a hairline. The sheet is the thickest material, with a highlight edge and a dimming scrim, because it is a focused task. The desktop rail stays solid, as the heaviest structural surface.
+- **Haptics** (`navigator.vibrate`) fire only for commits, on the same frame as the visual change: order filled, deposit credited, reward earned, withdrawal sent, quiz answer, error.
+- **Typography:** letter-spacing is size-specific (`--tr-*`), from +0.012em at 12px down to −0.03em on display numbers. Line-height tightens as size grows, and `font-optical-sizing: auto` is on. Spacing tokens are in rem, so layout scales with the reader's text-size setting. Geist is kept over the system font on purpose: Android OEM fonts vary widely, and money needs consistent tabular figures on every device.
+- **Accessibility:**
+  - `prefers-reduced-motion`: sheets and cards cross-fade instead of sliding, and numbers jump instead of rolling.
+  - `prefers-reduced-transparency`: bars and sheets become solid.
+  - `prefers-contrast: more`: solid materials, with defined borders on panels and controls.
+- **Wayfinding and agency:** tabs are named for what they contain (Portfolio, Markets, Learn, Activity). Naira withdrawals, which can't be reversed, get an inline review step ("Send ₦14,379.86 to ADAEZE OKAFOR … can't be reversed") before the final confirm.
+
 ## Components
 
-Buttons (primary, secondary, ghost, shell, brass; each with hover, active, disabled and loading), inputs, a large amount input with preset chips, segmented controls, a network radio-card, notices (info, warn, error, success), badges, data rows, a definition list, skeleton loaders and empty states that teach the next action. There are no modals: trade confirmations, withdrawal status and quiz results all render inline.
+Buttons (primary, secondary, ghost, shell, brass; each with hover, active, disabled and loading), inputs, a large amount input with preset chips, segmented controls, a network radio-card, notices (info, warn, error, success), badges, data rows, a definition list, skeleton loaders and empty states that teach the next action. There are no modals on desktop: trade confirmations, withdrawal status and quiz results all render inline. On phones, trading uses the bottom sheet above, the platform-native pattern for a focused task.
 
 ## Charts
 

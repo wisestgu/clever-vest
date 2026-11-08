@@ -101,16 +101,20 @@ Errors are always `{ error: { code, message } }`, and each message tells the use
 
 - **Regulatory and custody:** Dollo is the UX, education and order-routing layer. Execution and custody sit with a licensed US broker-dealer (Alpaca). USD balances and naira payouts sit with Cleva. The app says this on the welcome screen, the trade panel and the Account screen.
 - **Web3 onboarding:** the network choice is a two-option picker with fees, arrival times and minimums ($1 on TRC20, $10 on ERC20). A warning names the one network that address accepts. A lesson teaches the TRC20/ERC20 rule and pays $1 for passing.
-- **Demo flow for Saturday (about 3 minutes):** Explore the demo account → Deposit → simulate 25 USDT on TRC20 (watch the confirmations and the money route animate) → Discover → open Tesla from an insider-buy card → buy $5 → Learn → pass "TRC20 vs ERC20" to earn $1 of NVIDIA → Withdraw $10 to GTBank → Activity.
+- **Demo flow for Saturday (about 3 minutes):** Explore the demo account → Deposit → simulate 25 USDT on TRC20 (watch the confirmations and the money route animate) → Markets → open Tesla from an insider-buy card → buy $5 → Learn → pass "TRC20 vs ERC20" to earn $1 of NVIDIA → Withdraw $10 to GTBank → Activity.
 
 ## Design
 
-The UI follows the [impeccable](https://github.com/pbakaus/impeccable) design guidance in Operate mode: standard controls, a restrained product palette, and one signature move. See [DESIGN.md](DESIGN.md) for tokens, the validated chart palette and component rules, and [PRODUCT.md](PRODUCT.md) for product context.
+The UI combines two design skills. [impeccable](https://github.com/pbakaus/impeccable) (Operate mode) provides standard controls, a restrained Adire-indigo palette and one signature move. [apple-design](https://github.com/emilkowalski/skills/blob/main/skills/apple-design/SKILL.md) provides spring physics, press-instant feedback, a draggable trade sheet with momentum projection and rubber-banding, swipeable lessons, frosted-glass bars, size-specific tracking, and reduced-motion/transparency/contrast support. See [DESIGN.md](DESIGN.md) for tokens, the validated chart palette and component rules, and [PRODUCT.md](PRODUCT.md) for product context.
 
 ## Screenshots
 
-| Home (money route) | Stock + $1 trade |
+| Portfolio (money route) | Stock + $1 trade |
 | --- | --- |
-| ![Home](docs/screenshots/home.png) | ![Stock](docs/screenshots/stock.png) |
+| ![Portfolio](docs/screenshots/home.png) | ![Stock](docs/screenshots/stock.png) |
 | **USDT deposit** | **Welcome** |
 | ![Deposit](docs/screenshots/deposit.png) | ![Welcome](docs/screenshots/welcome.png) |
+
+| Phone: trade sheet | Phone: order filled | Phone: swipeable lesson | Phone: withdrawal review |
+| --- | --- | --- | --- |
+| ![Sheet](docs/screenshots/m-sheet-open.png) | ![Filled](docs/screenshots/m-sheet-filled.png) | ![Lesson](docs/screenshots/m-lesson.png) | ![Review](docs/screenshots/m-withdraw-review.png) |

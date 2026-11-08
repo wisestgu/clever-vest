@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle2, Clock } from 'lucide-react';
 import { api } from '../lib/api';
@@ -6,6 +6,8 @@ import { invalidate, useApi } from '../lib/useApi';
 import { relativeDay, shortAddress, time, usd } from '../lib/format';
 import type { Deposit, Network, Wallet } from '../lib/types';
 import { Button, CopyButton, LoadError, Notice, Qr, Skeleton } from '../components/ui';
+import { Segmented } from '../components/motion';
+import { haptic } from '../lib/motion';
 
 export function Fund() {
   const [method, setMethod] = useState<'usdt' | 'usd'>('usdt');
@@ -23,13 +25,17 @@ export function Fund() {
         </div>
       </div>
 
-      <div className="segmented" role="tablist" aria-label="Deposit method" style={{ marginBottom: 'var(--s-6)' }}>
-        <button role="tab" aria-selected={method === 'usdt'} onClick={() => setMethod('usdt')}>
-          USDT (crypto)
-        </button>
-        <button role="tab" aria-selected={method === 'usd'} onClick={() => setMethod('usd')}>
-          USD bank transfer
-        </button>
+      <div style={{ marginBottom: 'var(--s-6)' }}>
+        <Segmented
+          role="tablist"
+          label="Deposit method"
+          value={method}
+          onChange={setMethod}
+          options={[
+            { value: 'usdt', label: 'USDT (crypto)' },
+            { value: 'usd', label: 'USD bank transfer' },
+          ]}
+        />
       </div>
 
       {wallet.error && <LoadError error={wallet.error} onRetry={wallet.reload} />}
@@ -145,8 +151,10 @@ function Simulator({ network, min }: { network: Network; min: number }) {
     setBusy(true);
     try {
       await api('/deposits/simulate', { body: { network, amount } });
+      haptic('tick');
       invalidate();
     } catch (err) {
+      haptic('error');
       setError((err as Error).message);
     } finally {
       setBusy(false);
@@ -186,6 +194,17 @@ function Simulator({ network, min }: { network: Network; min: number }) {
 }
 
 function DepositList({ deposits, loading }: { deposits: Deposit[]; loading: boolean }) {
+  // Completion feedback: a haptic on the frame a confirming deposit flips to credited.
+  const seen = useRef(new Map<string, string>());
+  useEffect(() => {
+    let credited = false;
+    for (const d of deposits) {
+      if (seen.current.get(d.id) === 'confirming' && d.status === 'credited') credited = true;
+      seen.current.set(d.id, d.status);
+    }
+    if (credited) haptic('success');
+  }, [deposits]);
+
   return (
     <section className="panel" aria-labelledby="dep-h" aria-live="polite">
       <div className="panel-head">

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import { Button, Logo, Notice } from '../components/ui';
+import { Segmented } from '../components/motion';
 
 const EXAMPLE = [
   { label: 'You send', value: '20 USDT', note: 'on Tron (TRC20)' },
@@ -74,14 +75,17 @@ export function Welcome() {
 
       <section className="welcome-form">
         <div className="welcome-card">
-          <div className="segmented segmented-block" role="tablist" aria-label="Account">
-            <button type="button" role="tab" aria-selected={mode === 'signup'} onClick={() => setMode('signup')}>
-              Create account
-            </button>
-            <button type="button" role="tab" aria-selected={mode === 'signin'} onClick={() => setMode('signin')}>
-              Sign in
-            </button>
-          </div>
+          <Segmented
+            block
+            role="tablist"
+            label="Account"
+            value={mode}
+            onChange={setMode}
+            options={[
+              { value: 'signup', label: 'Create account' },
+              { value: 'signin', label: 'Sign in' },
+            ]}
+          />
 
           <form className="stack" onSubmit={submit} noValidate>
             {mode === 'signup' && (

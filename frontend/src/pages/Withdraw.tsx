@@ -6,6 +6,7 @@ import { invalidate, useApi } from '../lib/useApi';
 import { ngn, usd } from '../lib/format';
 import type { Bank, Wallet, Withdrawal, WithdrawalQuote } from '../lib/types';
 import { Button, Notice, Skeleton } from '../components/ui';
+import { haptic } from '../lib/motion';
 
 function useDebounced<T>(value: T, ms = 350) {
   const [v, setV] = useState(value);
@@ -26,6 +27,8 @@ export function Withdraw() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState<Withdrawal | null>(null);
+  const [review, setReview] = useState(false);
+  const fx = useApi<{ rate: number }>('/fx');
 
   const balance = wallet.data?.balance.usd ?? 0;
   const amt = Number(amount);
@@ -46,19 +49,30 @@ export function Withdraw() {
     };
   }, [bankCode, account]);
 
+  // Respond instantly: estimate from the last known rate on every keystroke; the server quote
+  // (debounced) replaces it a moment later with the exact figure.
+  useEffect(() => setReview(false), [amount, bankCode, account]);
+  const feeEstimate = Math.max(0.5, Math.round(amt * 100 * 0.01) / 100);
+  const estimate = fx.data && amt >= 2 ? Math.max(0, (amt - feeEstimate) * fx.data.rate) : null;
   const overBalance = amt > balance;
   const canSubmit = amt >= 2 && !overBalance && resolved && typeof resolved === 'object' && 'name' in resolved;
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
+    if (!review) {
+      setReview(true);
+      return;
+    }
     setBusy(true);
     setError(null);
     try {
       const { withdrawal } = await api<{ withdrawal: Withdrawal }>('/withdrawals', { body: { amount, bankCode, accountNumber: account } });
       setDone(withdrawal);
+      haptic('success');
       invalidate();
     } catch (err) {
+      haptic('error');
       setError((err as Error).message);
     } finally {
       setBusy(false);
@@ -67,7 +81,10 @@ export function Withdraw() {
 
   if (done) return <WithdrawalStatus initial={done} onAnother={() => { setDone(null); setAmount(''); }} />;
 
-  const q = quote.data;
+  const q = quote.data && Number(debounced) === amt ? quote.data : null;
+  const receive = q && validAmount ? q.receiveNgn : estimate;
+  const accountName = resolved && typeof resolved === 'object' && 'name' in resolved ? resolved.name : '';
+  const bankName = banks.data?.banks.find((b) => b.code === bankCode)?.name ?? '';
   return (
     <div className="page">
       <div className="page-head">
@@ -140,7 +157,9 @@ export function Withdraw() {
           <h2 id="sum-h" className="field-label">
             You’ll receive
           </h2>
-          <p className="receive num">{q && validAmount ? ngn(q.receiveNgn, true) : '₦0.00'}</p>
+          <p className="receive num" data-estimate={(!q && receive != null) || undefined}>
+            {receive != null ? ngn(receive, true) : '₦0.00'}
+          </p>
           {q && validAmount ? (
             <dl className="dl">
               <div>
@@ -160,15 +179,30 @@ export function Withdraw() {
                 <dd>Usually within minutes</dd>
               </div>
             </dl>
-          ) : quote.loading ? (
+          ) : estimate != null ? (
             <Skeleton h={100} />
           ) : (
             <p className="hint">Enter an amount from $2 to see the naira you’ll get, after fees.</p>
           )}
           {error && <Notice kind="error">{error}</Notice>}
-          <Button variant="primary" type="submit" block loading={busy} disabled={!canSubmit}>
-            {canSubmit ? `Withdraw ${usd(amt)}` : 'Withdraw'}
+          {review && canSubmit && q && (
+            <div className="review reveal" role="status">
+              <strong>
+                Send {ngn(q.receiveNgn, true)} to {accountName}
+              </strong>
+              <span>
+                {bankName} ····{account.slice(-4)}. Payouts can’t be reversed once sent.
+              </span>
+            </div>
+          )}
+          <Button variant="primary" type="submit" block loading={busy} disabled={!canSubmit || (review && !q)}>
+            {!canSubmit ? 'Withdraw' : review ? 'Confirm and send' : `Review withdrawal of ${usd(amt)}`}
           </Button>
+          {review && (
+            <Button variant="ghost" type="button" block onClick={() => setReview(false)}>
+              Edit details
+            </Button>
+          )}
           <p className="hint">The rate is indicative and refreshes every 15 seconds. Sandbox: no real naira is sent.</p>
         </aside>
       </form>

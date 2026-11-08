@@ -7,6 +7,7 @@ import type { CourseSummary, InsiderTrade, Portfolio } from '../lib/types';
 import { MoneyRoute } from '../components/MoneyRoute';
 import { Allocation } from '../components/Allocation';
 import { ChangeBadge, LoadError, Skeleton, Ticker } from '../components/ui';
+import { AnimatedNumber } from '../components/motion';
 
 export function Home() {
   const { user } = useAuth();
@@ -27,8 +28,9 @@ export function Home() {
               <p className="band-hello">Good to see you, {firstName}</p>
               {p ? (
                 <>
-                  <h1 className="band-total num" aria-label={`Total value ${usd(p.total)}`}>
-                    {usd(p.total)}
+                  <h1 className="band-total num">
+                    <span className="visually-hidden">Total value </span>
+                    <AnimatedNumber value={p.total} format={usd} />
                   </h1>
                   <p className="band-sub num">
                     <span className={`on-shell-${tone(p.dayChange) || 'flat'}`}>{signedUsd(p.dayChange)} today</span>

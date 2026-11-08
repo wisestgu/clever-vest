@@ -12,7 +12,7 @@ export function CollectionPage() {
   return (
     <div className="page">
       <Link to="/discover" className="back-link">
-        <ChevronLeft size={16} aria-hidden="true" /> Discover
+        <ChevronLeft size={16} aria-hidden="true" /> Markets
       </Link>
       {error ? (
         <LoadError error={error} onRetry={reload} />

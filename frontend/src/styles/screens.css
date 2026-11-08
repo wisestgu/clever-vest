@@ -90,13 +90,15 @@
   margin-top: 2px;
   font-size: var(--t-3xl);
   font-weight: 650;
-  letter-spacing: -0.03em;
+  letter-spacing: var(--tr-3xl);
   line-height: 1.1;
 }
 
 @media (min-width: 1000px) {
   .band-total {
     font-size: 2.75rem;
+    letter-spacing: var(--tr-display);
+    line-height: 1.05;
   }
 }
 
@@ -104,6 +106,7 @@
   margin-top: var(--s-2);
   color: var(--on-shell-2);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
 }
 
 .on-shell-gain {
@@ -144,6 +147,7 @@
 
 .route-label {
   font-size: var(--t-xs);
+  letter-spacing: var(--tr-xs);
   font-weight: 600;
   color: var(--on-shell-2);
   white-space: nowrap;
@@ -208,6 +212,7 @@
 .route-value {
   margin-top: 4px;
   font-size: var(--t-m);
+  letter-spacing: var(--tr-m);
   font-weight: 650;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -215,10 +220,12 @@
 
 .route-stop[data-interchange] .route-value {
   font-size: var(--t-l);
+  letter-spacing: var(--tr-l);
 }
 
 .route-note {
   font-size: var(--t-xs);
+  letter-spacing: var(--tr-xs);
   color: var(--on-shell-3);
   display: none;
 }
@@ -227,6 +234,7 @@
   margin-top: 2px;
   color: var(--on-shell);
   font-size: var(--t-xs);
+  letter-spacing: var(--tr-xs);
   font-weight: 600;
   text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--brass) 70%, transparent);
@@ -246,14 +254,17 @@
 
   .route-value {
     font-size: var(--t-l);
+    letter-spacing: var(--tr-l);
   }
 
   .route-stop[data-interchange] .route-value {
     font-size: var(--t-xl);
+    letter-spacing: var(--tr-xl);
   }
 
   .route-label {
     font-size: var(--t-s);
+    letter-spacing: var(--tr-s);
   }
 
   .route-line {
@@ -265,6 +276,7 @@
   .route-value,
   .route-stop[data-interchange] .route-value {
     font-size: var(--t-s);
+    letter-spacing: var(--tr-s);
   }
 }
 
@@ -283,6 +295,7 @@
 
 .welcome-copy h1 {
   font-size: var(--t-2xl);
+  letter-spacing: var(--tr-2xl);
   font-weight: 650;
   letter-spacing: -0.025em;
   max-width: 18ch;
@@ -333,23 +346,27 @@
 .wr-label {
   color: var(--on-shell-2);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
 }
 
 .wr-value {
   grid-row: span 2;
   align-self: center;
   font-size: var(--t-l);
+  letter-spacing: var(--tr-l);
   font-weight: 650;
 }
 
 .wr-note {
   color: var(--on-shell-3);
   font-size: var(--t-xs);
+  letter-spacing: var(--tr-xs);
 }
 
 .welcome-fine {
   color: var(--on-shell-3);
   font-size: var(--t-xs);
+  letter-spacing: var(--tr-xs);
   max-width: 60ch;
 }
 
@@ -372,6 +389,7 @@
   gap: var(--s-3);
   color: var(--ink-3);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
 }
 
 .divider::before,
@@ -397,11 +415,13 @@
 
   .welcome-copy h1 {
     font-size: 2.75rem;
-    line-height: 1.08;
+    letter-spacing: var(--tr-display);
+    line-height: 1.06;
   }
 
   .welcome-copy p {
     font-size: var(--t-l);
+    letter-spacing: var(--tr-l);
   }
 
   .welcome-route {
@@ -463,6 +483,7 @@
   justify-content: space-between;
   margin-top: var(--s-2);
   font-size: var(--t-xs);
+  letter-spacing: var(--tr-xs);
   color: var(--ink-3);
   font-variant-numeric: tabular-nums;
 }
@@ -490,6 +511,7 @@
   display: grid;
   gap: var(--s-2);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
 }
 
 .alloc-legend li {
@@ -520,6 +542,7 @@
 /* ---------- Home ---------- */
 .learn-teaser h2 {
   font-size: var(--t-l);
+  letter-spacing: var(--tr-l);
   font-weight: 650;
 }
 
@@ -548,10 +571,12 @@
 .insider-date {
   margin-left: auto;
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
 }
 
 .insider h3 {
   font-size: var(--t-l);
+  letter-spacing: var(--tr-l);
   font-weight: 650;
   line-height: 1.3;
 }
@@ -559,6 +584,7 @@
 .insider p {
   color: var(--ink-2);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
 }
 
 .insider-foot {
@@ -569,6 +595,7 @@
   margin-top: auto;
   padding-top: var(--s-2);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
 }
 
 .insider-foot .badge {
@@ -663,6 +690,7 @@
 
 .collection-head h3 {
   font-size: var(--t-l);
+  letter-spacing: var(--tr-l);
   font-weight: 650;
 }
 
@@ -670,6 +698,7 @@
   margin-top: 2px;
   color: var(--ink-2);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
 }
 
 .collection-head svg {
@@ -683,6 +712,7 @@
   padding: var(--s-3) var(--s-5);
   border-top: 1px solid var(--line);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
   font-weight: 600;
   text-decoration: none;
 }
@@ -743,6 +773,7 @@
 
 .network-meta {
   font-size: var(--t-xs);
+  letter-spacing: var(--tr-xs);
   color: var(--ink-2);
 }
 
@@ -814,6 +845,7 @@
 /* ---------- Withdraw ---------- */
 .receive {
   font-size: var(--t-3xl);
+  letter-spacing: var(--tr-3xl);
   font-weight: 650;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -830,6 +862,7 @@
   background: var(--gain-soft);
   color: var(--gain);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
   font-weight: 650;
 }
 
@@ -839,6 +872,7 @@
 
 .result h1 {
   font-size: var(--t-2xl);
+  letter-spacing: var(--tr-2xl);
   font-weight: 650;
 }
 
@@ -860,6 +894,7 @@
 
 .stock-head h1 {
   font-size: var(--t-2xl);
+  letter-spacing: var(--tr-2xl);
   font-weight: 650;
 }
 
@@ -869,17 +904,20 @@
   align-items: baseline;
   gap: var(--s-2) var(--s-3);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
   font-weight: 600;
 }
 
 .price {
   font-size: var(--t-3xl);
+  letter-spacing: var(--tr-3xl);
   font-weight: 650;
   letter-spacing: -0.03em;
 }
 
 .about {
   font-size: var(--t-l);
+  letter-spacing: var(--tr-l);
   max-width: 60ch;
 }
 
@@ -905,6 +943,7 @@
 
 .facts dt {
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
   color: var(--ink-3);
   font-weight: 500;
 }
@@ -912,17 +951,20 @@
 .facts dd {
   margin: 0;
   font-size: var(--t-xl);
+  letter-spacing: var(--tr-xl);
   font-weight: 650;
   letter-spacing: -0.01em;
 }
 
 .facts p {
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
   color: var(--ink-2);
 }
 
 .risk-label {
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
   font-weight: 600;
   color: var(--ink-2);
   margin-left: 4px;
@@ -954,6 +996,7 @@
 
 .trade-done h2 {
   font-size: var(--t-xl);
+  letter-spacing: var(--tr-xl);
   font-weight: 650;
 }
 
@@ -977,6 +1020,7 @@
 
 .earn-num {
   font-size: var(--t-xl);
+  letter-spacing: var(--tr-xl);
   font-weight: 650;
 }
 
@@ -1007,6 +1051,7 @@
   background: var(--surface-2);
   color: var(--ink-2);
   font-size: var(--t-xs);
+  letter-spacing: var(--tr-xs);
   font-weight: 700;
 }
 
@@ -1074,6 +1119,7 @@
   gap: var(--s-3);
   margin-bottom: var(--s-4);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
 }
 
 .lesson-card {
@@ -1083,11 +1129,13 @@
 
 .lesson-card h1 {
   font-size: var(--t-2xl);
+  letter-spacing: var(--tr-2xl);
   font-weight: 650;
 }
 
 .lesson-body {
   font-size: var(--t-l);
+  letter-spacing: var(--tr-l);
   line-height: 1.6;
   color: var(--ink-2);
   max-width: 56ch;
@@ -1112,6 +1160,12 @@
   font-weight: 550;
   cursor: pointer;
   transition: border-color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+}
+
+.option:active:not(:disabled),
+.network-opt:active {
+  transform: scale(0.98);
+  transition: transform var(--press);
 }
 
 .option:hover:not(:disabled) {
@@ -1149,6 +1203,7 @@
 .day-label {
   margin: 0 0 var(--s-2) var(--s-1);
   font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
   font-weight: 600;
   color: var(--ink-3);
 }
@@ -1189,6 +1244,7 @@
   width: 56px;
   height: 56px;
   font-size: var(--t-l);
+  letter-spacing: var(--tr-l);
   background: var(--shell);
 }
 
@@ -1202,4 +1258,169 @@
 
 .provider-row .row-main {
   display: grid;
+}
+
+/* ---------- Trade sheet (phones) ---------- */
+.main:has(.trade-bar) {
+  padding-bottom: calc(var(--nav-h) * 2 + env(safe-area-inset-bottom) + var(--s-6));
+}
+
+.trade-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-4);
+  background: var(--material-bar);
+  -webkit-backdrop-filter: var(--blur-bar);
+  backdrop-filter: var(--blur-bar);
+  box-shadow: 0 -0.5px 0 var(--material-edge);
+}
+
+.trade-bar-price {
+  flex: 1;
+  display: grid;
+  line-height: 1.25;
+}
+
+.trade-bar-price strong {
+  font-size: var(--t-l);
+  letter-spacing: var(--tr-l);
+}
+
+.trade-bar-price span {
+  font-size: var(--t-xs);
+  letter-spacing: var(--tr-xs);
+}
+
+.trade-bar .btn {
+  min-width: 5.5rem;
+}
+
+.sheet-root {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.sheet-scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+}
+
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 92dvh;
+  padding-bottom: env(safe-area-inset-bottom);
+  border-radius: 22px 22px 0 0;
+  background: var(--material-thick);
+  -webkit-backdrop-filter: var(--blur-thick);
+  backdrop-filter: var(--blur-thick);
+  border-top: 1px solid var(--material-highlight);
+  box-shadow: 0 -12px 40px -12px rgba(8, 10, 30, 0.35);
+  outline: none;
+  will-change: transform;
+}
+
+.sheet-grab {
+  flex: none;
+  padding: var(--s-2) var(--s-5) var(--s-2);
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.sheet-grab:active {
+  cursor: grabbing;
+}
+
+.sheet-handle {
+  display: block;
+  width: 36px;
+  height: 5px;
+  margin: 0 auto var(--s-3);
+  border-radius: 3px;
+  background: var(--line-strong);
+}
+
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+.sheet-head h2 {
+  font-size: var(--t-l);
+  letter-spacing: var(--tr-l);
+  font-weight: 650;
+}
+
+.sheet-body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--s-3) var(--s-5) var(--s-5);
+}
+
+.icon-btn-round {
+  border-radius: 50%;
+  border: 0;
+  background: var(--surface-2);
+}
+
+/* ---------- Lesson stage ---------- */
+.lesson-stage {
+  position: relative;
+}
+
+.lesson-card {
+  touch-action: pan-y;
+}
+
+.lesson-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .swipe-hint {
+    display: none;
+  }
+}
+
+/* ---------- Withdraw review ---------- */
+.receive {
+  transition: color 160ms var(--ease-out);
+}
+
+.receive[data-estimate] {
+  color: var(--ink-2);
+}
+
+.review {
+  display: grid;
+  gap: 2px;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--radius-m);
+  background: var(--surface-2);
+  font-size: var(--t-s);
+  letter-spacing: var(--tr-s);
+  color: var(--ink-2);
+}
+
+.review strong {
+  color: var(--ink);
+  font-size: var(--t-m);
 }

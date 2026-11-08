@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { CheckCircle2, ChevronLeft } from 'lucide-react';
 import { api } from '../lib/api';
@@ -7,6 +7,10 @@ import { compactUsd, ngn, pct, shares, signedUsd, tone, usd } from '../lib/forma
 import type { Order, Portfolio, Range, StockSnapshot } from '../lib/types';
 import { PriceChart } from '../components/PriceChart';
 import { Button, LoadError, Notice, Skeleton, Ticker } from '../components/ui';
+import { Segmented } from '../components/motion';
+import { Sheet } from '../components/Sheet';
+import { haptic } from '../lib/motion';
+import { useMedia } from '../lib/useMedia';
 
 const RANGES: Range[] = ['1D', '1W', '1M', '3M', '1Y'];
 
@@ -16,6 +20,10 @@ export function StockPage() {
   const [scrub, setScrub] = useState<{ t: number; p: number } | null>(null);
   const { data, error, reload } = useApi<{ stock: StockSnapshot }>(`/market/stocks/${encodeURIComponent(symbol)}?range=${range}`, { poll: 15_000 });
   const s = data?.stock;
+  const wide = useMedia('(min-width: 900px)');
+  const [sheet, setSheet] = useState<'buy' | 'sell' | null>(null);
+  const pf = useApi<{ portfolio: Portfolio }>('/portfolio');
+  const owned = pf.data?.portfolio.holdings.find((h) => h.symbol === s?.symbol);
 
   const first = s?.history[0]?.p;
   const shown = scrub?.p ?? s?.price ?? 0;
@@ -25,7 +33,7 @@ export function StockPage() {
   return (
     <div className="page">
       <Link to="/discover" className="back-link">
-        <ChevronLeft size={16} aria-hidden="true" /> Discover
+        <ChevronLeft size={16} aria-hidden="true" /> Markets
       </Link>
       {error && <LoadError error={error} onRetry={reload} />}
       {!s && !error && (
@@ -55,13 +63,7 @@ export function StockPage() {
                 </span>
               </div>
               <PriceChart points={s.history} range={range} onScrub={setScrub} name={s.name} />
-              <div className="segmented" role="radiogroup" aria-label="Chart range">
-                {RANGES.map((r) => (
-                  <button key={r} role="radio" aria-checked={range === r} onClick={() => setRange(r)}>
-                    {r}
-                  </button>
-                ))}
-              </div>
+              <Segmented block label="Chart range" value={range} onChange={setRange} options={RANGES.map((r) => ({ value: r, label: r }))} />
               {s.quote.source === 'sandbox' && <p className="hint">Simulated sandbox prices, not live market data.</p>}
             </section>
 
@@ -114,26 +116,53 @@ export function StockPage() {
             </section>
           </div>
 
-          <div className="sticky-col">
-            <TradePanel stock={s} />
-          </div>
+          {wide ? (
+            <div className="sticky-col">
+              <TradePanel stock={s} />
+            </div>
+          ) : (
+            <div className="trade-bar">
+              <div className="trade-bar-price num">
+                <strong>{usd(s.price ?? 0)}</strong>
+                <span className="muted">{owned ? `You own ${usd(owned.value)}` : 'From $1'}</span>
+              </div>
+              {owned && (
+                <button type="button" className="btn" onClick={() => setSheet('sell')}>
+                  Sell
+                </button>
+              )}
+              <button type="button" className="btn btn-primary" onClick={() => setSheet('buy')}>
+                Buy
+              </button>
+            </div>
+          )}
         </div>
+      )}
+      {s && sheet && !wide && (
+        <Sheet title={`${sheet === 'buy' ? 'Buy' : 'Sell'} ${s.name}`} onClose={() => setSheet(null)}>
+          <TradePanel stock={s} initialSide={sheet} bare />
+        </Sheet>
       )}
     </div>
   );
 }
 
-function TradePanel({ stock }: { stock: StockSnapshot }) {
+function TradePanel({ stock, initialSide = 'buy', bare }: { stock: StockSnapshot; initialSide?: 'buy' | 'sell'; bare?: boolean }) {
   const pf = useApi<{ portfolio: Portfolio }>('/portfolio');
   const fx = useApi<{ rate: number }>('/fx');
-  const [side, setSide] = useState<'buy' | 'sell'>('buy');
+  const [side, setSide] = useState<'buy' | 'sell'>(initialSide);
   const [amount, setAmount] = useState('5');
   const [sellAll, setSellAll] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [filled, setFilled] = useState<Order | null>(null);
 
+  const firstRun = useRef(true);
   useEffect(() => {
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
     setError(null);
     setSellAll(false);
   }, [side, stock.symbol]);
@@ -153,8 +182,10 @@ function TradePanel({ stock }: { stock: StockSnapshot }) {
     try {
       const { order } = await api<{ order: Order }>('/orders', { body: sellAll ? { symbol: stock.symbol, side, all: true } : { symbol: stock.symbol, side, amount } });
       setFilled(order);
+      haptic('success');
       invalidate();
     } catch (err) {
+      haptic('error');
       setError((err as Error).message);
     } finally {
       setBusy(false);
@@ -163,7 +194,7 @@ function TradePanel({ stock }: { stock: StockSnapshot }) {
 
   if (filled) {
     return (
-      <section className="panel panel-pad stack trade-done" aria-live="polite">
+      <section className={`${bare ? '' : 'panel panel-pad '}stack trade-done reveal`} aria-live="polite">
         <CheckCircle2 className="gain" size={28} aria-hidden="true" />
         <h2>
           {filled.side === 'buy' ? 'You bought' : 'You sold'} {usd(filled.notional)} of {stock.name}
@@ -195,19 +226,23 @@ function TradePanel({ stock }: { stock: StockSnapshot }) {
   }
 
   return (
-    <form className="panel panel-pad stack-l trade" onSubmit={submit} aria-labelledby="trade-h">
+    <form className={`${bare ? '' : 'panel panel-pad '}stack-l trade`} onSubmit={submit} aria-label={side === 'buy' ? `Buy ${stock.name}` : `Sell ${stock.name}`}>
       <div className="stack-s">
-        <h2 id="trade-h" className="field-label">
-          {side === 'buy' ? `Buy ${stock.name}` : `Sell ${stock.name}`}
-        </h2>
-        <div className="segmented segmented-block" role="radiogroup" aria-label="Order side">
-          <button type="button" role="radio" aria-checked={side === 'buy'} onClick={() => setSide('buy')}>
-            Buy
-          </button>
-          <button type="button" role="radio" aria-checked={side === 'sell'} onClick={() => setSide('sell')} disabled={!position}>
-            Sell
-          </button>
-        </div>
+        {!bare && (
+          <h2 className="field-label">
+            {side === 'buy' ? `Buy ${stock.name}` : `Sell ${stock.name}`}
+          </h2>
+        )}
+        <Segmented
+          block
+          label="Order side"
+          value={side}
+          onChange={setSide}
+          options={[
+            { value: 'buy', label: 'Buy' },
+            { value: 'sell', label: 'Sell', disabled: !position },
+          ]}
+        />
       </div>
 
       <div className="field">

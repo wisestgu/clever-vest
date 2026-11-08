@@ -1,12 +1,12 @@
 import { NavLink, Link, Outlet } from 'react-router-dom';
-import { ArrowDownToLine, ArrowUpFromLine, Compass, GraduationCap, House, ReceiptText } from 'lucide-react';
+import { ArrowDownToLine, ArrowUpFromLine, ChartLine, GraduationCap, ReceiptText, Wallet } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import { initials } from '../lib/format';
 import { Logo } from './ui';
 
 const NAV = [
-  { to: '/', label: 'Home', icon: House, end: true },
-  { to: '/discover', label: 'Discover', icon: Compass },
+  { to: '/', label: 'Portfolio', icon: Wallet, end: true },
+  { to: '/discover', label: 'Markets', icon: ChartLine },
   { to: '/learn', label: 'Learn & earn', short: 'Learn', icon: GraduationCap },
   { to: '/activity', label: 'Activity', icon: ReceiptText },
 ];
