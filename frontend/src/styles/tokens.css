@@ -1,0 +1,114 @@
+/* Dollo design tokens. Adire indigo shell, cool indigo-tinted ground, brass for earned value. */
+:root {
+  color-scheme: light;
+
+  --bg: #f2f3f8;
+  --surface: #ffffff;
+  --surface-2: #e9ebf4;
+  --surface-sunk: #e3e6f0;
+  --ink: #12162e;
+  --ink-2: #454a68;
+  --ink-3: #5d6286;
+  --line: #dcdfeb;
+  --line-strong: #c4c8dc;
+
+  --shell: #141b5c;
+  --shell-deep: #0d1240;
+  --shell-raise: #1f2877;
+  --shell-line: rgba(226, 229, 250, 0.16);
+  --on-shell: #f2f3fa;
+  --on-shell-2: #bcc1e8;
+  --on-shell-3: #959bd0;
+
+  --primary: #3243b5;
+  --primary-hover: #283799;
+  --primary-press: #1f2c80;
+  --on-primary: #ffffff;
+  --primary-soft: #e2e5fa;
+  --primary-ink: #2a3aa0;
+
+  --brass: #e0b44c;
+  --brass-ink: #81600f;
+  --brass-soft: #f6ecd2;
+
+  --gain: #11784b;
+  --gain-soft: #dcf1e5;
+  --loss: #ae2530;
+  --loss-soft: #f9e2e4;
+  --warn: #7c5200;
+  --warn-soft: #fff2d8;
+  --warn-line: #ecc56f;
+
+  --focus: #4a5bd0;
+  --selection: #c9cff6;
+
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 14px;
+
+  --shadow-1: 0 1px 2px rgba(18, 22, 46, 0.06), 0 1px 1px rgba(18, 22, 46, 0.04);
+  --shadow-2: 0 6px 20px -8px rgba(18, 22, 46, 0.22), 0 2px 6px -2px rgba(18, 22, 46, 0.08);
+
+  --font: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* 1.2 ratio product scale */
+  --t-xs: 0.75rem;
+  --t-s: 0.8125rem;
+  --t-m: 0.9375rem;
+  --t-l: 1.125rem;
+  --t-xl: 1.375rem;
+  --t-2xl: 1.75rem;
+  --t-3xl: 2.25rem;
+
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --rail-w: 232px;
+  --nav-h: 64px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --bg: #0a0d22;
+    --surface: #121638;
+    --surface-2: #191e47;
+    --surface-sunk: #0e1230;
+    --ink: #eceefb;
+    --ink-2: #b7bcdd;
+    --ink-3: #9197c0;
+    --line: #252b5a;
+    --line-strong: #353c72;
+    --shell: #10154a;
+    --shell-deep: #070a1f;
+    --shell-raise: #1b2268;
+    --primary: #7080f2;
+    --primary-hover: #8592f5;
+    --primary-press: #5a6be6;
+    --on-primary: #0a0d22;
+    --primary-soft: #222a66;
+    --primary-ink: #a9b3ff;
+    --brass-ink: #e8c46c;
+    --brass-soft: #3a2f12;
+    --gain: #4fcf8f;
+    --gain-soft: #0f3324;
+    --loss: #ff7a83;
+    --loss-soft: #3d151b;
+    --warn: #f3c66a;
+    --warn-soft: #33270b;
+    --warn-line: #6e5418;
+    --focus: #8f9bff;
+    --selection: #34407f;
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-2: 0 10px 28px -10px rgba(0, 0, 0, 0.6), 0 2px 6px -2px rgba(0, 0, 0, 0.4);
+  }
+}
