@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { CheckCircle2, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import { Coin } from '../components/Coin';
 import { useApi } from '../lib/useApi';
 import { shares } from '../lib/format';
 import type { CourseSummary } from '../lib/types';
@@ -23,23 +24,22 @@ export function Learn() {
 
       {data && (
         <div className="earn-strip" aria-label="Rewards progress">
-          <div>
-            <span className="earn-num num">${earned}</span>
-            <span className="muted"> of ${available} earned</span>
-          </div>
-          <div className="earn-track" role="progressbar" aria-valuemin={0} aria-valuemax={courses.length} aria-valuenow={done.length} aria-label="Lessons completed">
+          <div className="purse" role="img" aria-label={`${done.length} of ${courses.length} reward coins earned`}>
             {courses.map((c) => (
-              <span key={c.id} data-on={c.completed || undefined} />
+              <Coin key={c.id} value={`$${c.reward.usd}`} seed={c.id} size={44} earned={c.completed} />
             ))}
           </div>
-          <span className="muted num">
-            {done.length}/{courses.length} lessons
-          </span>
+          <div className="earn-copy">
+            <span className="earn-num num">${earned} earned</span>
+            <span className="muted num">
+              ${available - earned} still in the purse · {done.length}/{courses.length} lessons
+            </span>
+          </div>
         </div>
       )}
 
       {error && <LoadError error={error} onRetry={reload} />}
-      <section className="panel" aria-label="Lessons" style={{ maxWidth: 760 }}>
+      <section aria-label="Lessons" style={{ maxWidth: 760 }}>
         {!data ? (
           <div className="panel-pad stack">
             <Skeleton h={56} />
@@ -47,20 +47,18 @@ export function Learn() {
             <Skeleton h={56} />
           </div>
         ) : (
-          <ul className="rows">
+          <ul className="ledger">
             {courses.map((c) => (
               <li key={c.id}>
-                <Link to={`/learn/${c.id}`} className="row lesson-row">
-                  <span className="lesson-topic" data-done={c.completed || undefined} aria-hidden="true">
-                    {c.completed ? <CheckCircle2 /> : `${c.minutes}m`}
-                  </span>
-                  <div className="row-main">
-                    <div className="row-title">{c.title}</div>
-                    <div className="row-sub">
+                <Link to={`/learn/${c.id}`} className="ledger-row lesson-row">
+                  <Coin value={`$${c.reward.usd}`} seed={c.id} size={44} earned={c.completed} />
+                  <span className="ledger-main">
+                    <span className="ledger-title">{c.title}</span>
+                    <span className="ledger-sub">
                       {c.topic} · {c.minutes} minute · {c.questions} questions
-                    </div>
-                  </div>
-                  <div className="row-end lesson-end">
+                    </span>
+                  </span>
+                  <span className="lesson-end">
                     {c.completed && c.earned ? (
                       <span className="badge badge-gain num">
                         Earned {shares(c.earned.shares)} {c.reward.symbol}
@@ -71,7 +69,7 @@ export function Learn() {
                       </span>
                     )}
                     <ChevronRight className="muted" size={18} aria-hidden="true" />
-                  </div>
+                  </span>
                 </Link>
               </li>
             ))}

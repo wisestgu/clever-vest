@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import { Button, Logo, Notice } from '../components/ui';
+import { Note } from '../components/Note';
 import { Segmented } from '../components/motion';
 
 const EXAMPLE = [
@@ -46,30 +47,32 @@ export function Welcome() {
 
   return (
     <div className="welcome">
-      <section className="welcome-story adire">
+      <section className="welcome-story">
         <div className="brand">
           <Logo />
-          Dollo
+          <span>Dollo</span>
         </div>
+        <Note seed="welcome-one-dollar" micro="DOLLO · ONE DOLLAR · ỌKAN DỌLA · OTU DOLLAR · DALA ƊAYA" serial="DL 0000 000001" corner="1" className="welcome-note">
+          <span className="note-label">The smallest amount you can invest</span>
+          <span className="denom denom-xl num">$1</span>
+          <p className="note-sub">One dollar buys a real slice of Apple, Tesla or NVIDIA.</p>
+        </Note>
         <div className="welcome-copy">
-          <h1>US stocks from $1, funded with USDT, cashed out in naira.</h1>
-          <p>
-            Deposit USDT on Tron or Ethereum, own slices of Apple or NVIDIA, learn the basics in 60-second lessons, and
-            send your returns to any Nigerian bank.
-          </p>
+          <h1>US stocks from $1. Fund with USDT, cash out in naira.</h1>
+          <p>Send USDT on Tron or Ethereum and it lands as dollars, one for one. Buy slices of US companies, learn the basics in 60-second lessons, and send returns to any Nigerian bank.</p>
         </div>
-        <ol className="welcome-route" aria-label="Example: how 20 USDT moves through Dollo">
-          {EXAMPLE.map((s) => (
+        <ol className="welcome-steps" aria-label="Example: how 20 USDT moves through Dollo">
+          {EXAMPLE.map((s, i) => (
             <li key={s.label}>
-              <span className="wr-label">{s.label}</span>
-              <span className="wr-value num">{s.value}</span>
-              <span className="wr-note">{s.note}</span>
+              <span className="ws-num" aria-hidden="true">{i + 1}</span>
+              <span className="ws-label">{s.label}</span>
+              <span className="ws-value num">{s.value}</span>
+              <span className="ws-note">{s.note}</span>
             </li>
           ))}
         </ol>
         <p className="welcome-fine">
-          Dollo is the app you use. Trades are executed and held by a licensed US broker-dealer, and USD balances are held
-          by Cleva. Example figures are illustrative.
+          Dollo is the app you use. Trades are executed and held by a licensed US broker-dealer, and dollar balances are held by Cleva. Example figures are illustrative.
         </p>
       </section>
 

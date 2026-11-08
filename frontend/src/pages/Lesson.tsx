@@ -9,6 +9,7 @@ import { shares, usd } from '../lib/format';
 import { haptic, project, spring } from '../lib/motion';
 import type { Course, Reward } from '../lib/types';
 import { Button, LoadError, Notice, Skeleton } from '../components/ui';
+import { Note } from '../components/Note';
 
 type Result = { score: number; total: number; passed: boolean; reward: Reward | null; alreadyRewarded: boolean };
 
@@ -174,9 +175,19 @@ export function Lesson() {
         {result ? (
           result.passed ? (
             <>
-              <div className="result-icon brass">
-                <PartyPopper />
-              </div>
+              {result.reward ? (
+                <div className="printing">
+                  <Note seed={`reward-${course.id}`} tint="copper" size="mini" micro={`DOLLO · REWARD · ${course.reward.name.toUpperCase()}`} corner="1">
+                    <span className="note-label">Learn-to-earn reward</span>
+                    <span className="denom num">$1</span>
+                    <span className="mini-sub">of {course.reward.name}, yours to keep</span>
+                  </Note>
+                </div>
+              ) : (
+                <div className="result-icon brass">
+                  <PartyPopper />
+                </div>
+              )}
               <div className="stack-s">
                 <h1>{result.reward ? `You earned ${usd(result.reward.usd)} of ${course.reward.name}` : 'Perfect score'}</h1>
                 <p className="muted">

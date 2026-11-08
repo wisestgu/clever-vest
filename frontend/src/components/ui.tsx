@@ -2,19 +2,18 @@ import { useEffect, useState, type ButtonHTMLAttributes, type ReactNode } from '
 import { AlertTriangle, Check, CircleAlert, Copy, Info } from 'lucide-react';
 import QRCode from 'qrcode';
 import { pct, tone } from '../lib/format';
+import { Rosette } from './Guilloche';
 
-export function Logo({ className = 'brand-mark' }: { className?: string }) {
+export function Logo({ className = 'logo' }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 32 32" aria-hidden="true">
-      <rect width="32" height="32" rx="9" fill="var(--shell-raise)" />
-      <circle cx="16" cy="16" r="8.5" fill="none" stroke="var(--on-shell)" strokeWidth="2.4" />
-      <circle cx="16" cy="16" r="3" fill="var(--brass)" />
-    </svg>
+    <span className={className} aria-hidden="true">
+      <Rosette seed="dollo-mark-3" layers={4} stroke={0.9} />
+    </span>
   );
 }
 
 type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'shell' | 'brass';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'quiet' | 'brass';
   size?: 'sm' | 'md';
   block?: boolean;
   loading?: boolean;
@@ -48,10 +47,11 @@ export function ChangeBadge({ value, className = '' }: { value: number | null | 
   return <span className={`badge num ${t ? `badge-${t}` : ''} ${className}`}>{pct(value)}</span>;
 }
 
+/** Ticker as type, not as an icon tile. */
 export function Ticker({ symbol, large }: { symbol: string; large?: boolean }) {
   return (
-    <span className={`ticker ${large ? 'ticker-lg' : ''}`} aria-hidden="true">
-      {symbol.slice(0, 4)}
+    <span className={`sym ${large ? 'sym-lg' : ''}`} aria-hidden="true">
+      {symbol}
     </span>
   );
 }
@@ -82,7 +82,7 @@ export function Qr({ value, label }: { value: string; label: string }) {
   const [svg, setSvg] = useState('');
   useEffect(() => {
     let alive = true;
-    QRCode.toString(value, { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#12162e', light: '#ffffff' } }).then((s) => alive && setSvg(s));
+    QRCode.toString(value, { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#10231b', light: '#ffffff' } }).then((s) => alive && setSvg(s));
     return () => {
       alive = false;
     };

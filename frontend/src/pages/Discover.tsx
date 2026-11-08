@@ -1,25 +1,28 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useApi } from '../lib/useApi';
-import { relativeDay, usd } from '../lib/format';
+import { compactUsd, pct, relativeDay, tone, usd } from '../lib/format';
 import type { Collection, InsiderTrade, Listing } from '../lib/types';
-import { ChangeBadge, LoadError, Skeleton, Ticker } from '../components/ui';
+import { LoadError, Skeleton, Ticker } from '../components/ui';
+import { Note, type Tint } from '../components/Note';
+
+const TINT: Record<string, Tint> = { 'ai-revolution': 'violet', 'dividend-payers': 'copper', 'clean-energy': 'green', 'everyday-brands': 'blue' };
 
 export function StockRow({ s }: { s: Listing }) {
   return (
-    <Link to={`/stocks/${s.symbol}`} className="row">
+    <Link to={`/stocks/${s.symbol}`} className="ledger-row">
       <Ticker symbol={s.symbol} />
-      <div className="row-main">
-        <div className="row-title">{s.name}</div>
-        <div className="row-sub">
-          {s.sector} · Risk {s.risk}/10
-        </div>
-      </div>
-      <div className="row-end">
+      <span className="ledger-main">
+        <span className="ledger-title">{s.name}</span>
+        <span className="ledger-sub">
+          {s.sector} · risk {s.risk}/10
+        </span>
+      </span>
+      <span className="ledger-end num">
         <strong>{s.price != null ? usd(s.price) : '—'}</strong>
-        <ChangeBadge value={s.changePct} />
-      </div>
+        <small className={tone(s.changePct)}>{s.changePct != null ? pct(s.changePct) : ''}</small>
+      </span>
     </Link>
   );
 }
@@ -38,29 +41,23 @@ export function Discover() {
 
   return (
     <div className="page">
-      <div className="page-head">
-        <div>
-          <h1>Markets</h1>
-          <p>What insiders are doing, themes worth knowing, and every company explained in plain English.</p>
+      <header className="page-title">
+        <h1>Markets</h1>
+        <div className="search">
+          <Search aria-hidden="true" />
+          <label htmlFor="q" className="visually-hidden">
+            Search stocks
+          </label>
+          <input id="q" className="input" type="search" placeholder="Apple, TSLA, clean energy…" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off" />
         </div>
-      </div>
-
-      <div className="search">
-        <Search aria-hidden="true" />
-        <label htmlFor="q" className="visually-hidden">
-          Search stocks
-        </label>
-        <input id="q" className="input" type="search" placeholder="Search Apple, TSLA, clean energy…" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off" />
-      </div>
+      </header>
 
       {term ? (
-        <section className="panel section-tight" aria-live="polite" aria-label="Search results">
+        <section aria-live="polite" aria-label="Search results">
           {results.loading && !results.data ? (
-            <div className="panel-pad">
-              <Skeleton h={44} />
-            </div>
+            <Skeleton h={160} />
           ) : results.data?.results.length ? (
-            <ul className="rows">
+            <ul className="ledger">
               {results.data.results.map((s) => (
                 <li key={s.symbol}>
                   <StockRow s={s} />
@@ -68,87 +65,75 @@ export function Discover() {
               ))}
             </ul>
           ) : (
-            <div className="empty">
-              <h3>No match for “{term}”</h3>
-              <p>Dollo covers 18 popular US companies in the sandbox. Try a company name like “Coca-Cola”, a ticker like “NVDA”, or a theme like “energy”.</p>
+            <div className="empty sheet-plain">
+              <h3>Nothing matches “{term}”</h3>
+              <p>The sandbox covers 18 US companies. Try a name like “Coca-Cola”, a ticker like “NVDA”, or a theme like “energy”.</p>
             </div>
           )}
         </section>
       ) : (
         <>
-          <section className="section-tight" aria-labelledby="ins-h">
+          <section aria-labelledby="col-h">
             <div className="section-head">
-              <div>
-                <h2 id="ins-h">Insider activity</h2>
-                <p>Company leaders must report when they trade their own company’s stock. Here’s what they did recently.</p>
-              </div>
-              {feed.data?.source === 'sample' && <span className="badge">Sample data, not real filings</span>}
+              <h2 id="col-h">Collections</h2>
+              <p className="muted">Themes printed as notes. Open one to see every company inside.</p>
             </div>
-            {feed.error && <LoadError error={feed.error} onRetry={feed.reload} />}
-            <div className="insider-scroll" role="list">
-              {feed.data
-                ? feed.data.insiders.slice(0, 8).map((i) => (
-                    <article key={i.id} className="insider" role="listitem">
-                      <div className="insider-top">
-                        <Ticker symbol={i.symbol} />
-                        <span className={`badge ${i.type === 'buy' ? 'badge-gain' : 'badge-loss'}`}>{i.type === 'buy' ? 'Bought' : 'Sold'}</span>
-                        <span className="muted insider-date">{relativeDay(i.filedAt)}</span>
-                      </div>
-                      <h3>{i.headline}</h3>
-                      <p>{i.meaning}</p>
-                      <div className="insider-foot">
-                        <span className="num muted">
-                          {i.quote && (
-                            <>
-                              {usd(i.quote.price)} <ChangeBadge value={i.quote.changePct} />
-                            </>
-                          )}
-                        </span>
-                        <Link to={`/stocks/${i.symbol}`} className="btn btn-sm">
-                          View
-                        </Link>
-                      </div>
-                    </article>
-                  ))
-                : [0, 1, 2].map((k) => <Skeleton key={k} h={200} />)}
+            {cols.error && <LoadError error={cols.error} onRetry={cols.reload} />}
+            <div className="notes-rail">
+              {cols.data
+                ? cols.data.collections.map((c) => {
+                    const up = c.stocks.filter((s) => (s.changePct ?? 0) > 0).length;
+                    return (
+                      <Link key={c.id} to={`/discover/${c.id}`} className="note-link" aria-label={`${c.name}: ${c.stocks.length} companies`}>
+                        <Note seed={c.id} tint={TINT[c.id] ?? 'green'} size="mini" micro={c.name.toUpperCase()} corner={String(c.stocks.length)} as="article">
+                          <span className="note-label">{c.stocks.length} companies</span>
+                          <h3 className="mini-title">{c.name}</h3>
+                          <p className="mini-sub">{c.blurb}</p>
+                          <span className="mini-foot num">
+                            {c.symbols.slice(0, 3).join(' · ')}
+                            <span>
+                              {up}/{c.stocks.length} up
+                            </span>
+                          </span>
+                        </Note>
+                      </Link>
+                    );
+                  })
+                : [0, 1, 2].map((k) => <Skeleton key={k} h={190} r={14} />)}
             </div>
           </section>
 
-          <section className="section" aria-labelledby="col-h">
+          <section className="section" aria-labelledby="ins-h">
             <div className="section-head">
-              <div>
-                <h2 id="col-h">Collections</h2>
-                <p>Ideas grouped by theme. Start with one company or spread $1 across several.</p>
-              </div>
+              <h2 id="ins-h">Insider wire</h2>
+              <p className="muted">When company leaders trade their own stock, they must report it. Here’s what they did, in plain English.</p>
             </div>
-            {cols.error && <LoadError error={cols.error} onRetry={cols.reload} />}
-            <div className="collections">
-              {cols.data
-                ? cols.data.collections.map((c) => (
-                    <section key={c.id} className="panel collection" aria-labelledby={`c-${c.id}`}>
-                      <Link to={`/discover/${c.id}`} className="collection-head">
-                        <div>
-                          <h3 id={`c-${c.id}`}>{c.name}</h3>
-                          <p>{c.blurb}</p>
-                        </div>
-                        <ArrowRight aria-hidden="true" />
-                      </Link>
-                      <ul className="rows">
-                        {c.stocks.slice(0, 3).map((s) => (
-                          <li key={s.symbol}>
-                            <StockRow s={s} />
-                          </li>
-                        ))}
-                      </ul>
-                      {c.stocks.length > 3 && (
-                        <Link to={`/discover/${c.id}`} className="collection-more">
-                          See all {c.stocks.length} companies
-                        </Link>
-                      )}
-                    </section>
-                  ))
-                : [0, 1].map((k) => <Skeleton key={k} h={260} />)}
-            </div>
+            {feed.error && <LoadError error={feed.error} onRetry={feed.reload} />}
+            {feed.data ? (
+              <ul className="wire wire-full">
+                {feed.data.insiders.map((i) => (
+                  <li key={i.id}>
+                    <Link to={`/stocks/${i.symbol}`} className="wire-row" data-side={i.type}>
+                      <span className="wire-side" aria-hidden="true">
+                        {i.type === 'buy' ? 'BUY' : 'SELL'}
+                      </span>
+                      <span className="wire-text">
+                        {i.headline}
+                        <span className="wire-meaning">{i.meaning}</span>
+                      </span>
+                      <span className="wire-figure num">
+                        {compactUsd(i.value)}
+                        <small className={tone(i.quote?.changePct)}>{i.quote ? `${usd(i.quote.price)} ${pct(i.quote.changePct)}` : ''}</small>
+                      </span>
+                      <span className="wire-date">{relativeDay(i.filedAt)}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <Skeleton h={260} />
+            )}
+            {feed.data?.source === 'sample' && <p className="hint">Sample filings generated for the sandbox. They are not real trades.</p>}
           </section>
         </>
       )}

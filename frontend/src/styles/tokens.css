@@ -1,58 +1,69 @@
-/* Dollo design tokens. Adire indigo shell, cool indigo-tinted ground, brass for earned value. */
+/* Dollo design tokens: "Legal Tender".
+   Security paper, intaglio green, copper coin, guilloche lines. Money printed, not dashboarded. */
 :root {
   color-scheme: light;
 
-  --bg: #f2f3f8;
-  --surface: #ffffff;
-  --surface-2: #e9ebf4;
-  --surface-sunk: #e3e6f0;
-  --ink: #12162e;
-  --ink-2: #454a68;
-  --ink-3: #5d6286;
-  --line: #dcdfeb;
-  --line-strong: #c4c8dc;
+  /* Paper */
+  --bg: #e7ece2;
+  --surface: #f5f7f1;
+  --surface-2: #dde5d7;
+  --surface-sunk: #d3dccd;
+  --line: #c9d3c3;
+  --line-strong: #a9b7a3;
 
-  --shell: #141b5c;
-  --shell-deep: #0d1240;
-  --shell-raise: #1f2877;
-  --shell-line: rgba(226, 229, 250, 0.16);
-  --on-shell: #f2f3fa;
-  --on-shell-2: #bcc1e8;
-  --on-shell-3: #959bd0;
+  /* Intaglio ink */
+  --ink: #0f2219;
+  --ink-2: #384b42;
+  --ink-3: #56685f;
 
-  --primary: #3243b5;
-  --primary-hover: #283799;
-  --primary-press: #1f2c80;
-  --on-primary: #ffffff;
-  --primary-soft: #e2e5fa;
-  --primary-ink: #2a3aa0;
+  /* Action: banknote green */
+  --primary: #0f4a36;
+  --primary-hover: #0b3a2a;
+  --primary-press: #082c20;
+  --on-primary: #f2f6ee;
+  --primary-soft: #cfe1d3;
+  --primary-ink: #0f4a36;
 
-  --brass: #e0b44c;
-  --brass-ink: #81600f;
-  --brass-soft: #f6ecd2;
+  /* Copper: rewards, coins, hold-to-send */
+  --copper: #b4692f;
+  --copper-ink: #874a1b;
+  --copper-soft: #f0dcc6;
 
-  --gain: #11784b;
-  --gain-soft: #dcf1e5;
-  --loss: #ae2530;
-  --loss-soft: #f9e2e4;
-  --warn: #7c5200;
-  --warn-soft: #fff2d8;
-  --warn-line: #ecc56f;
+  /* State */
+  --gain: #12784a;
+  --gain-soft: #d2ead9;
+  --loss: #b1332a;
+  --loss-soft: #f5dcd6;
+  --warn: #7a5300;
+  --warn-soft: #f6e8c6;
+  --warn-line: #dfbd6c;
 
-  --focus: #4a5bd0;
-  --selection: #c9cff6;
+  --focus: #b4692f;
+  --selection: #c6dfcb;
 
-  --radius-s: 6px;
-  --radius-m: 10px;
-  --radius-l: 14px;
+  /* Note inks (like naira denominations) */
+  --note-green: #0f4a36;
+  --note-green-line: #8bcaa6;
+  --note-violet: #362a74;
+  --note-violet-line: #ab9df0;
+  --note-copper: #64341a;
+  --note-copper-line: #e7ad79;
+  --note-blue: #163b6e;
+  --note-blue-line: #93b8ea;
+  --on-note: #f1f6ee;
+  --on-note-2: rgba(241, 246, 238, 0.76);
 
-  --shadow-1: 0 1px 2px rgba(18, 22, 46, 0.06), 0 1px 1px rgba(18, 22, 46, 0.04);
-  --shadow-2: 0 6px 20px -8px rgba(18, 22, 46, 0.22), 0 2px 6px -2px rgba(18, 22, 46, 0.08);
+  --radius-s: 8px;
+  --radius-m: 12px;
+  --radius-l: 18px;
 
-  --font: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --shadow-note: 0 1px 0 rgba(255, 255, 255, 0.07) inset, 0 22px 44px -22px rgba(6, 30, 20, 0.6), 0 3px 8px -2px rgba(6, 30, 20, 0.22);
+
+  --font: 'Schibsted Grotesk Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --display: 'Bodoni Moda Variable', 'Bodoni 72', Didot, 'Times New Roman', serif;
   --mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
-  /* 1.2 ratio product scale */
+  /* Type scale (1.2) with size-specific tracking */
   --t-xs: 0.75rem;
   --t-s: 0.8125rem;
   --t-m: 0.9375rem;
@@ -60,8 +71,6 @@
   --t-xl: 1.375rem;
   --t-2xl: 1.75rem;
   --t-3xl: 2.25rem;
-
-  /* Tracking is size-specific: small text opens up slightly, large text tightens. */
   --tr-xs: 0.012em;
   --tr-s: 0.005em;
   --tr-m: 0em;
@@ -69,9 +78,9 @@
   --tr-xl: -0.012em;
   --tr-2xl: -0.018em;
   --tr-3xl: -0.024em;
-  --tr-display: -0.03em;
+  --tr-display: -0.02em;
 
-  /* Spacing in rem so layout scales with the reader's text-size setting. */
+  /* Spacing in rem: scales with the reader's text size */
   --s-1: 0.25rem;
   --s-2: 0.5rem;
   --s-3: 0.75rem;
@@ -81,62 +90,63 @@
   --s-8: 2rem;
   --s-10: 2.5rem;
   --s-12: 3rem;
+  --s-16: 4rem;
 
-  /* Materials: translucent layers that content scrolls beneath. */
-  --material-bar: rgba(255, 255, 255, 0.72);
-  --material-thick: rgba(255, 255, 255, 0.9);
-  --material-edge: rgba(18, 22, 46, 0.12);
-  --material-shell: rgba(20, 27, 92, 0.92);
+  /* Materials */
+  --material-bar: rgba(245, 247, 241, 0.74);
+  --material-thick: rgba(245, 247, 241, 0.92);
+  --material-edge: rgba(15, 34, 25, 0.14);
+  --material-highlight: rgba(255, 255, 255, 0.6);
   --blur-bar: blur(20px) saturate(180%);
   --blur-thick: blur(32px) saturate(180%);
-  --scrim: rgba(8, 10, 30, 0.42);
-  --material-highlight: rgba(255, 255, 255, 0.55);
+  --scrim: rgba(6, 18, 12, 0.45);
 
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --press: 100ms ease-out;
-  --rail-w: 14.5rem;
   --nav-h: 4rem;
+  --mast-h: 3.75rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     color-scheme: dark;
-    --bg: #0a0d22;
-    --surface: #121638;
-    --surface-2: #191e47;
-    --surface-sunk: #0e1230;
-    --ink: #eceefb;
-    --ink-2: #b7bcdd;
-    --ink-3: #9197c0;
-    --line: #252b5a;
-    --line-strong: #353c72;
-    --shell: #10154a;
-    --shell-deep: #070a1f;
-    --shell-raise: #1b2268;
-    --primary: #7080f2;
-    --primary-hover: #8592f5;
-    --primary-press: #5a6be6;
-    --on-primary: #0a0d22;
-    --primary-soft: #222a66;
-    --primary-ink: #a9b3ff;
-    --brass-ink: #e8c46c;
-    --brass-soft: #3a2f12;
-    --gain: #4fcf8f;
-    --gain-soft: #0f3324;
-    --loss: #ff7a83;
-    --loss-soft: #3d151b;
-    --warn: #f3c66a;
+    --bg: #09130e;
+    --surface: #101d17;
+    --surface-2: #17271f;
+    --surface-sunk: #0c1812;
+    --line: #213429;
+    --line-strong: #31493b;
+    --ink: #e4ede5;
+    --ink-2: #b2c3b8;
+    --ink-3: #8b9f93;
+    --primary: #6fcf9c;
+    --primary-hover: #86dbae;
+    --primary-press: #58bd89;
+    --on-primary: #06140e;
+    --primary-soft: #183b2b;
+    --primary-ink: #8edcb2;
+    --copper: #d38749;
+    --copper-ink: #eba86f;
+    --copper-soft: #3a2413;
+    --gain: #5fd296;
+    --gain-soft: #10301f;
+    --loss: #ff8a7e;
+    --loss-soft: #3a1612;
+    --warn: #f0c56a;
     --warn-soft: #33270b;
     --warn-line: #6e5418;
-    --focus: #8f9bff;
-    --selection: #34407f;
-    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-2: 0 10px 28px -10px rgba(0, 0, 0, 0.6), 0 2px 6px -2px rgba(0, 0, 0, 0.4);
-    --material-bar: rgba(18, 22, 56, 0.72);
-    --material-thick: rgba(22, 27, 66, 0.9);
-    --material-edge: rgba(236, 238, 251, 0.1);
-    --material-shell: rgba(16, 21, 74, 0.9);
-    --scrim: rgba(0, 0, 0, 0.55);
-    --material-highlight: rgba(236, 238, 251, 0.12);
+    --focus: #eba86f;
+    --selection: #234a37;
+    --note-green: #0e3d2d;
+    --note-violet: #2c2262;
+    --note-copper: #552b14;
+    --note-blue: #12315d;
+    --shadow-note: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 22px 44px -22px rgba(0, 0, 0, 0.8), 0 3px 8px -2px rgba(0, 0, 0, 0.5);
+    --material-bar: rgba(16, 29, 23, 0.74);
+    --material-thick: rgba(16, 29, 23, 0.92);
+    --material-edge: rgba(228, 237, 229, 0.1);
+    --material-highlight: rgba(228, 237, 229, 0.1);
+    --scrim: rgba(0, 0, 0, 0.6);
   }
 }

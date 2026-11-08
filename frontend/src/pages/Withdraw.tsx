@@ -7,6 +7,7 @@ import { ngn, usd } from '../lib/format';
 import type { Bank, Wallet, Withdrawal, WithdrawalQuote } from '../lib/types';
 import { Button, Notice, Skeleton } from '../components/ui';
 import { haptic } from '../lib/motion';
+import { HoldButton } from '../components/HoldButton';
 
 function useDebounced<T>(value: T, ms = 350) {
   const [v, setV] = useState(value);
@@ -57,13 +58,13 @@ export function Withdraw() {
   const overBalance = amt > balance;
   const canSubmit = amt >= 2 && !overBalance && resolved && typeof resolved === 'object' && 'name' in resolved;
 
-  const submit = async (e: FormEvent) => {
+  const submit = (e: FormEvent) => {
     e.preventDefault();
+    if (canSubmit) setReview(true);
+  };
+
+  const send = async () => {
     if (!canSubmit) return;
-    if (!review) {
-      setReview(true);
-      return;
-    }
     setBusy(true);
     setError(null);
     try {
@@ -195,9 +196,15 @@ export function Withdraw() {
               </span>
             </div>
           )}
-          <Button variant="primary" type="submit" block loading={busy} disabled={!canSubmit || (review && !q)}>
-            {!canSubmit ? 'Withdraw' : review ? 'Confirm and send' : `Review withdrawal of ${usd(amt)}`}
-          </Button>
+          {review && canSubmit && q ? (
+            <HoldButton onConfirm={send} busy={busy} hint="Press and hold to send. Let go to cancel.">
+              Hold to send {ngn(q.receiveNgn)}
+            </HoldButton>
+          ) : (
+            <Button variant="primary" type="submit" block disabled={!canSubmit}>
+              {canSubmit ? `Review withdrawal of ${usd(amt)}` : 'Withdraw'}
+            </Button>
+          )}
           {review && (
             <Button variant="ghost" type="button" block onClick={() => setReview(false)}>
               Edit details

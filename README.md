@@ -105,16 +105,24 @@ Errors are always `{ error: { code, message } }`, and each message tells the use
 
 ## Design
 
-The UI combines two design skills. [impeccable](https://github.com/pbakaus/impeccable) (Operate mode) provides standard controls, a restrained Adire-indigo palette and one signature move. [apple-design](https://github.com/emilkowalski/skills/blob/main/skills/apple-design/SKILL.md) provides spring physics, press-instant feedback, a draggable trade sheet with momentum projection and rubber-banding, swipeable lessons, frosted-glass bars, size-specific tracking, and reduced-motion/transparency/contrast support. See [DESIGN.md](DESIGN.md) for tokens, the validated chart palette and component rules, and [PRODUCT.md](PRODUCT.md) for product context.
+The UI's visual world is **"Legal Tender"**: Dollo is printed like money. The world comes from [impeccable](https://github.com/pbakaus/impeccable) (Operate mode, no AI-slop defaults; `npx impeccable detect frontend/src` reports 0 findings). The motion and feel come from [apple-design](https://github.com/emilkowalski/skills/blob/main/skills/apple-design/SKILL.md) and Emil Kowalski's design-engineering skill.
+
+- The portfolio is a tiltable banknote, with a generated guilloche, microtext in four languages and a holographic thread.
+- Collections are printed as naira-style denominations.
+- Rewards are copper coins, and a passed lesson prints a $1 note.
+- The money route is an engraved line.
+- Naira withdrawals confirm with hold-to-send.
+
+The draggable trade sheet, swipeable lessons, springs and glass bars carry over from the apple-design pass. See [DESIGN.md](DESIGN.md).
 
 ## Screenshots
 
 | Portfolio (money route) | Stock + $1 trade |
 | --- | --- |
 | ![Portfolio](docs/screenshots/home.png) | ![Stock](docs/screenshots/stock.png) |
-| **USDT deposit** | **Welcome** |
-| ![Deposit](docs/screenshots/deposit.png) | ![Welcome](docs/screenshots/welcome.png) |
+| **Markets (collections as notes)** | **Welcome** |
+| ![Markets](docs/screenshots/markets.png) | ![Welcome](docs/screenshots/welcome.png) |
 
-| Phone: trade sheet | Phone: order filled | Phone: swipeable lesson | Phone: withdrawal review |
+| Phone: trade sheet | Phone: order filled | Phone: swipeable lesson | Phone: hold to send |
 | --- | --- | --- | --- |
-| ![Sheet](docs/screenshots/m-sheet-open.png) | ![Filled](docs/screenshots/m-sheet-filled.png) | ![Lesson](docs/screenshots/m-lesson.png) | ![Review](docs/screenshots/m-withdraw-review.png) |
+| ![Sheet](docs/screenshots/m-sheet-open.png) | ![Filled](docs/screenshots/m-sheet-filled.png) | ![Lesson](docs/screenshots/m-lesson.png) | ![Hold to send](docs/screenshots/m-withdraw-holding.png) |

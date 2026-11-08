@@ -1,4 +1,4 @@
-import { useId, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { Range } from '../lib/types';
 
 const W = 640;
@@ -27,7 +27,6 @@ export function PriceChart({
 }) {
   const ref = useRef<SVGSVGElement>(null);
   const [hover, setHover] = useState<number | null>(null);
-  const gradId = useId();
 
   const geo = useMemo(() => {
     const ps = points.map((x) => x.p);
@@ -37,9 +36,8 @@ export function PriceChart({
     const x = (i: number) => (i / Math.max(points.length - 1, 1)) * W;
     const y = (p: number) => PAD_T + (1 - (p - min) / span) * (H - PAD_T - PAD_B);
     const d = points.map((pt, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(pt.p).toFixed(1)}`).join('');
-    const area = `${d}L${W},${H}L0,${H}Z`;
     const base = y(points[0]?.p ?? 0);
-    return { d, area, x, y, min, max, base };
+    return { d, x, y, min, max, base };
   }, [points]);
 
   const pick = (clientX: number) => {
@@ -82,14 +80,7 @@ export function PriceChart({
         }}
         onBlur={clear}
       >
-        <defs>
-          <linearGradient id={gradId} x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.14" />
-            <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
-          </linearGradient>
-        </defs>
         <line x1="0" x2={W} y1={geo.base} y2={geo.base} className="chart-base" vectorEffect="non-scaling-stroke" />
-        <path d={geo.area} fill={`url(#${gradId})`} />
         <path d={geo.d} className="chart-line" vectorEffect="non-scaling-stroke" />
         {hp && hover != null && (
           <line x1={geo.x(hover)} x2={geo.x(hover)} y1="0" y2={H} className="chart-cross" vectorEffect="non-scaling-stroke" />

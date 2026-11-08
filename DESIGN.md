@@ -1,46 +1,61 @@
-# Design system
+# Design system: "Legal Tender"
 
-Mode: **Operate.** Users come to Dollo to get a job done, so navigation, controls and layout are the standard ones a fintech user already knows. The visual world lends four things only: type, palette, density and one signature move.
+Mode: **Operate.** People come to Dollo to get a job done, so navigation, controls and layout are the ones a fintech user already knows. The visual world lends four things only: type, palette, density and one signature move.
 
-Two design skills shape the UI. [impeccable](https://github.com/pbakaus/impeccable) sets the visual world, the craft floor and the Operate-mode restraint. [apple-design](https://github.com/emilkowalski/skills/blob/main/skills/apple-design/SKILL.md) (Apple's WWDC fluid-interface guidance, translated for the web) sets how the UI moves, responds and layers. See *Feel* below.
+Two design skills shape the UI. [impeccable](https://github.com/pbakaus/impeccable) sets the visual world, the craft floor and the bans on AI-slop defaults. [apple-design](https://github.com/emilkowalski/skills/blob/main/skills/apple-design/SKILL.md) (Apple's WWDC fluid-interface guidance, translated for the web) and Emil Kowalski's [design-engineering](https://github.com/emilkowalski/skills/tree/main/skills/emil-design-eng) skill set how the UI moves, responds and layers.
 
-## World: Adire indigo
+## World
 
-The palette comes from adire, the indigo resist-dyed cloth of Abeokuta. The deep indigo shell carries the brand: side rail, mobile top bar, home band and welcome panel. The content ground is a cool, faintly indigo-tinted grey rather than white or cream. Brass, like the thread and gold worn with indigo, marks earned value and the primary path in: the Deposit button, Learn-to-earn rewards and the money route.
+Dollo moves value between naira, USDT and dollars, so the app is **printed like money**. The world is security printing: pale sage security paper, deep intaglio green, engraved guilloche rosettes, microtext, serial numbers, a windowed holographic thread, and copper coins for anything earned. Every Nigerian and every dollar holder knows these marks by heart.
 
-The home band and welcome panel carry an authored SVG tile after *adire eleko* (rings, dashed resist circles and seeds). It sits at about 8% opacity and fades in from the left so it never sits under text.
+The world deliberately refuses the category default: a dark SaaS sidebar, white cards with soft shadows, ticker icon tiles, uniform card grids, gradient-filled charts and an indigo/neon palette. `npx impeccable detect frontend/src` reports 0 findings. The previous design had a side-tab border tell.
 
-## Signature move: the money route
+## Signature move: the banknote
 
-On Home, the user's money is drawn as a transit line (`components/MoneyRoute.tsx`):
+`components/Note.tsx` prints a value as a note:
 
-`USDT in ── USD balance ══ US stocks ── Naira out`
+- **Ground:** intaglio green with fine cross-hatched engraving lines.
+- **Guilloche:** a rosette and a woven band, generated procedurally (`components/Guilloche.tsx`). These are real hypotrochoids and phase-shifted sine waves, seeded so every user's note and every collection is unique.
+- **Microtext border:** "ONE DOLLAR" in English, Yoruba (*ọkan dọla*), Igbo (*otu dollar*) and Hausa (*dala ɗaya*).
+- **Serial number:** the user's Cleva account number, set as a serial in red.
+- **Denomination numerals:** set in Bodoni Moda.
 
-- Brass track on indigo; USD balance and US stocks are larger "interchange" nodes.
-- Each stop shows its live amount and an action (Deposit, Add, Invest, Withdraw).
-- Empty stops dim their node and the track leading into them.
-- While a USDT deposit is confirming, the first segment flows (an animated dash), so value in transit is visible.
-- The welcome screen repeats the route vertically as a worked example (20 USDT → $20 → $5 of Tesla → ₦).
+The note **tilts toward the pointer** on a critically damped spring. Its **windowed holographic security thread** shifts colour with the tilt angle, and a soft sheen follows the light.
+
+The note carries across surfaces:
+
+- **Portfolio:** the user's total value, as a green note.
+- **Markets:** each sector collection is printed as its own denomination, in a different ink like naira notes: AI Revolution in violet, Top Dividend Payers in copper, Clean Energy in green, Brands You Already Use in blue.
+- **Learn-to-earn:** a passed lesson *prints* a copper $1 reward note. Its engraved lines draw themselves in once, a rare and earned moment.
+- **Welcome:** the hero is a $1 note, "the smallest amount you can invest".
+
+Supporting moves:
+
+- **Money route:** four numbered stations joined by an engraved guilloche line. While a USDT deposit is confirming, a copper pulse travels along the first leg.
+- **Copper coins** (`components/Coin.tsx`) for rewards. The Learn page shows a purse of five coins, filled as they are earned.
+- **Insider wire:** a dense list with rubber-stamp BUY/SELL marks and the deal size in Bodoni, replacing the card grid.
+- **Hold to send:** naira withdrawals confirm by holding the button (Emil's hold-to-confirm). A copper fill creeps across linearly while the user decides (1.4s) and snaps back in 200ms on release. It works with pointer, Space and Enter.
 
 ## Tokens
 
-Defined in `frontend/src/styles/tokens.css`. Light and dark themes are each chosen, not auto-inverted.
+Defined in `frontend/src/styles/tokens.css`. Light and dark are each chosen, not auto-inverted.
 
 | Role | Light | Dark |
 | --- | --- | --- |
-| Ground `--bg` | `#f2f3f8` | `#0a0d22` |
-| Surface `--surface` | `#ffffff` | `#121638` |
-| Ink / secondary / muted | `#12162e` / `#454a68` / `#5d6286` | `#eceefb` / `#b7bcdd` / `#9197c0` |
-| Shell `--shell` / rail `--shell-deep` | `#141b5c` / `#0d1240` | `#10154a` / `#070a1f` |
-| Primary action `--primary` | `#3243b5` | `#7080f2` |
-| Brass `--brass` (fill) / `--brass-ink` (text) | `#e0b44c` / `#81600f` | `#e0b44c` / `#e8c46c` |
-| Gain / loss / warning | `#11784b` / `#ae2530` / `#7c5200` | `#4fcf8f` / `#ff7a83` / `#f3c66a` |
+| Paper `--bg` / sheet `--surface` | `#e7ece2` / `#f5f7f1` | `#09130e` / `#101d17` |
+| Intaglio ink / secondary / muted | `#0f2219` / `#384b42` / `#56685f` | `#e4ede5` / `#b2c3b8` / `#8b9f93` |
+| Action `--primary` (banknote green) | `#0f4a36` | `#6fcf9c` |
+| Copper (rewards, hold-to-send) | `#b4692f` | `#d38749` |
+| Note inks: green / violet / copper / blue | `#0f4a36` / `#362a74` / `#64341a` / `#163b6e` | slightly deeper |
+| Gain / loss / warning | `#12784a` / `#b1332a` / `#7a5300` | `#5fd296` / `#ff8a7e` / `#f0c56a` |
 
-- **Type:** Geist (variable, self-hosted) for everything. Geist Mono only for data that is read character by character: wallet addresses, account numbers, references. The scale ratio is 1.2 in fixed rem (12 · 13 · 15 · 18 · 22 · 28 · 36px). Every figure uses tabular numerals.
-- **Spacing:** a 4px base (4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48).
-- **Radius:** 6 for small controls, 10 for buttons and inputs, 14 for panels.
-- **Motion:** 140–250ms with exponential ease-out, used only for state (hover, selection, confirmations, the flowing route). `prefers-reduced-motion` is respected.
-- **Browser surfaces:** focus ring, selection colour, caret, accent colour and scrollbars are themed from the palette.
+- **Type:**
+  - **Schibsted Grotesk** is the UI workhorse.
+  - **Bodoni Moda**, with its optical-size axis, is for denominations, page titles, prices and money figures. Its engraved, high-contrast numerals come straight from banknote lettering.
+  - **Geist Mono** is only for data read character by character: tickers, serials, addresses.
+  - Prose numbers use proportional lining figures. Schibsted's tabular period is too wide.
+- **Shape:** pill buttons and segmented controls, 12px inputs, and 18px notes and inset-grouped lists. There are no drop shadows on content surfaces; only notes cast a shadow, because they are objects.
+- **Layout:** a paper masthead with a sliding green underline on desktop, a glass tab bar on phones, and inset-grouped ledgers (Apple's familiar grouped list) for holdings, lessons and activity.
 
 ## Feel (apple-design layer)
 
@@ -68,24 +83,24 @@ Defined in `frontend/src/styles/tokens.css`. Light and dark themes are each chos
 
 ## Components
 
-Buttons (primary, secondary, ghost, shell, brass; each with hover, active, disabled and loading), inputs, a large amount input with preset chips, segmented controls, a network radio-card, notices (info, warn, error, success), badges, data rows, a definition list, skeleton loaders and empty states that teach the next action. There are no modals on desktop: trade confirmations, withdrawal status and quiz results all render inline. On phones, trading uses the bottom sheet above, the platform-native pattern for a focused task.
+Pill buttons (primary, secondary, quiet, ghost; each with hover, active, disabled and loading), underlined Bodoni amount inputs with preset chips, iOS segmented controls, network radio-cards, notices, badges, inset-grouped ledger rows, definition lists, skeletons and empty states that teach the next action. Desktop has no modals. On phones, trading uses the bottom sheet, the platform-native pattern for a focused task.
 
 ## Charts
 
-- **Price chart:** a single 2px series in `--primary` with a dashed baseline at the range's opening price. A crosshair and dot scrub the price into the header. Arrow keys scrub too.
-- **Allocation:** a thin 8px segmented bar with 2px gaps and fully rounded ends, plus a legend that always prints percentage and value.
-- **Categorical order:** validated with the dataviz palette checker against both surfaces. Four stock slots, then a neutral "Other", then the USD reserve:
+- **Price chart:** a single 2px series in banknote green, a dotted baseline at the range's opening price, and no gradient fill. A crosshair and dot scrub the price into the Bodoni header. Arrow keys scrub too.
+- **Allocation:** a thin 8px segmented bar with 2px gaps, plus a legend that always prints percentage and value.
+- **Categorical order:** validated with the dataviz palette checker against both new surfaces. Four stock slots, then a neutral "Other", then the USD reserve:
 
   | Slot | Light | Dark |
   | --- | --- | --- |
-  | Stock 1 | `#2a78d6` | `#3987e5` |
-  | Stock 2 | `#eb6834` | `#d95926` |
-  | Stock 3 | `#1baf7a` | `#199e70` |
-  | Stock 4 | `#6250d6` | `#9085e9` |
-  | Other | `#8b90aa` | `#6d7298` |
-  | USD reserve | `#eda100` | `#c98500` |
+  | Stock 1 | `#2c6cc0` | `#3f86db` |
+  | Stock 2 | `#c4692c` | `#d06a2c` |
+  | Stock 3 | `#1b9a6c` | `#24a676` |
+  | Stock 4 | `#6a55d0` | `#8676e3` |
+  | Other | `#8a978f` | `#5f7068` |
+  | USD reserve | `#c9a227` | `#b38a1f` |
 
-  The light theme passes every check: worst adjacent CVD ΔE is 9.2. Two slots fall below 3:1 contrast on white, so the legend always carries labels and values. Colour follows the entity: slots go to the top four holdings in alphabetical order, not by rank.
+  The light theme passes every check: worst adjacent CVD ΔE is 8.5. Only the reserve slot falls below 3:1 contrast, so the legend always carries labels and values. The dark theme passes every check. Colour follows the entity, not its rank.
 
 ## Copy
 
