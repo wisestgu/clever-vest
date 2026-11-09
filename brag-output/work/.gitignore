@@ -1,0 +1,7 @@
+frames/
+*.wav
+node_modules/
+stills/
+check/
+*.png
+frame0-original.jpg

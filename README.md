@@ -6,6 +6,12 @@ Dollo is a mobile-first investing app for Nigerian retail investors. Users depos
 
 Everything runs in **sandbox mode** by default. No real money moves, and every simulated surface is labelled as such in the UI.
 
+## Demo video
+
+[![Dollo launch video: Own US stocks from $1](brag-output/brag.jpg)](brag-output/brag.mp4)
+
+A 24-second launch video ([`brag-output/brag.mp4`](brag-output/brag.mp4)), made with the [/brag](https://github.com/latent-spaces/brag) skill. It uses the app's real components and an original soundtrack. The storyboard is in [`brag-output/brag-plan.md`](brag-output/brag-plan.md), the share copy is in [`brag-output/share-copy.txt`](brag-output/share-copy.txt), and the composition sources are in `brag-output/work/`.
+
 ## Run it
 
 Requires Node 20+.

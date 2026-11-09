@@ -1,0 +1,467 @@
+/* Composition-only layout. Everything visual inside the stages comes from the app's own CSS. */
+html,
+body {
+  margin: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.vid {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* Paper */
+.v-paper {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.v-wm {
+  position: absolute;
+  color: var(--primary);
+  opacity: 0.075;
+}
+
+.v-wm svg {
+  width: 100%;
+  height: 100%;
+}
+
+.v-wm-a {
+  width: 980px;
+  height: 980px;
+  right: -300px;
+  top: -340px;
+}
+
+.v-wm-b {
+  width: 760px;
+  height: 760px;
+  left: -330px;
+  bottom: -360px;
+  opacity: 0.06;
+}
+
+.v-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 54px;
+  width: 100%;
+  height: 40px;
+  color: var(--primary);
+  opacity: 0.12;
+}
+
+/* Scenes */
+.v-scene {
+  position: absolute;
+  inset: 0;
+}
+
+.v-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.v-split {
+  display: grid;
+  grid-template-columns: 820px 1fr;
+  align-items: center;
+  padding: 0 120px 0 150px;
+  column-gap: 60px;
+}
+
+.v-left {
+  align-self: center;
+}
+
+.v-right {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1080px;
+}
+
+.v-stage {
+  position: relative;
+  width: 760px;
+}
+
+.v-zoom {
+  zoom: 1.6;
+  width: 475px;
+}
+
+.v-zoom-tight {
+  zoom: 1.5;
+  width: 506px;
+}
+
+.v-zoom-route {
+  zoom: 1.62;
+  width: 469px;
+  position: relative;
+}
+
+.v-host {
+  position: relative;
+}
+
+.v-route-stage {
+  width: 100%;
+}
+
+/* Captions */
+.v-caption {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 92px;
+  font-weight: 650;
+  line-height: 1.02;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.v-word {
+  display: inline-block;
+  white-space: pre;
+}
+
+.v-tap {
+  position: absolute;
+  z-index: 20;
+  left: 50%;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid var(--copper);
+  background: color-mix(in srgb, var(--copper) 18%, transparent);
+  pointer-events: none;
+}
+
+/* Engraving: guilloche lines draw themselves in */
+.engrave .note-rosette path,
+.engrave .note-band path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: var(--draw, 0);
+}
+
+/* Hook */
+.v-hook-note {
+  width: 1120px;
+}
+
+.v-hook-note .note {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07) inset, 0 40px 80px -36px rgba(6, 30, 20, 0.65), 0 6px 16px -4px rgba(6, 30, 20, 0.25);
+}
+
+.v-hook-note .note-content {
+  padding: 4.5rem 2.6rem 4rem;
+}
+
+.v-hook-note .denom-xl {
+  font-size: 12rem;
+}
+
+.v-hook-note .note-label {
+  font-size: 1.25rem;
+}
+
+.v-hook-cap {
+  margin-top: 54px;
+}
+
+.v-hook-cap .v-caption {
+  font-size: 86px;
+  text-align: center;
+}
+
+/* Reveal */
+.v-lockup {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.v-logo {
+  display: inline-grid;
+}
+
+.v-logo .logo {
+  width: 120px;
+  height: 120px;
+  padding: 10px;
+}
+
+.v-wordmark {
+  font-family: var(--display);
+  font-size: 190px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.v-tagline {
+  margin-top: 26px;
+  font-size: 46px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--ink-2);
+}
+
+.v-stations {
+  position: relative;
+  margin-top: 86px;
+  width: 1100px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.v-stations-line {
+  position: absolute;
+  left: 16.6%;
+  right: 16.6%;
+  top: 22px;
+  height: 16px;
+  color: var(--primary);
+  opacity: 0.6;
+}
+
+.v-stations-wave {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.v-station {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.v-node {
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.v-station-label {
+  font-family: var(--display);
+  font-size: 50px;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.v-station-sub {
+  font-size: 22px;
+  color: var(--ink-3);
+}
+
+/* Deposit */
+.v-addr .qr {
+  width: 128px;
+}
+
+.v-deprow .row {
+  min-height: 68px;
+}
+
+.v-clock {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2.5px solid var(--warn);
+  border-top-color: transparent;
+}
+
+.v-pulse-track {
+  position: absolute;
+  left: 12.5%;
+  right: 12.5%;
+  top: calc(var(--s-5) + 16px);
+  height: 0;
+}
+
+.v-pulse {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 50%;
+  background: var(--copper);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--copper) 25%, transparent);
+}
+
+.route-pulse {
+  display: none;
+}
+
+/* Buy */
+.v-stock {
+  gap: 12px;
+}
+
+.v-stock-name {
+  font-family: var(--display);
+  font-size: 2.25rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.v-chart {
+  display: block;
+  width: 100%;
+  height: 120px;
+  overflow: visible;
+}
+
+.v-done {
+  display: grid;
+  gap: 4px;
+  padding: 6px 0 2px;
+}
+
+.v-done-title {
+  font-family: var(--display);
+  font-size: 1.75rem;
+  font-weight: 650;
+  line-height: 1.1;
+}
+
+.v-done-sub {
+  font-size: var(--t-s);
+  color: var(--ink-3);
+}
+
+/* Learn */
+.v-quiz-q {
+  font-family: var(--display);
+  font-size: 2.1rem;
+  font-weight: 650;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.v-center-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 34px;
+}
+
+.v-coin-drop .coin {
+  box-shadow: inset 0 0 0 4px rgba(255, 236, 214, 0.28), inset 0 -8px 14px rgba(60, 25, 5, 0.35), 0 24px 40px -16px rgba(80, 40, 10, 0.55);
+}
+
+.v-purse {
+  display: flex;
+}
+
+.v-purse .coin + .coin {
+  margin-left: -12px;
+}
+
+.v-purse .coin:not([data-earned]) {
+  filter: grayscale(1) contrast(0.8);
+  opacity: 0.38;
+}
+
+.v-earned {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 64px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+/* Naira */
+.v-naira .receive {
+  font-size: 3.2rem;
+}
+
+.v-sent {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.v-sent-title {
+  font-family: var(--display);
+  font-size: 2.6rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+/* Outro */
+.v-outro-note {
+  width: 1080px;
+  display: grid;
+  gap: 18px;
+}
+
+.v-tilt .note-thread {
+  background-position: 50% var(--foil, 0%) !important;
+}
+
+.v-tilt .note-content {
+  padding: 4rem 2.4rem 3.6rem;
+}
+
+.v-tilt .denom {
+  font-size: 7.5rem;
+}
+
+.v-tilt .note-sub {
+  font-size: 1.15rem;
+  max-width: 40ch;
+}
+
+.v-tilt .note-label {
+  font-size: 1.2rem;
+}
+
+.v-zoom-route-out {
+  zoom: 1.2;
+}
+
+.v-final {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.v-final-line {
+  margin: 34px 0 0;
+  font-family: var(--display);
+  font-size: 84px;
+  font-weight: 650;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+}
+
+.v-fine {
+  margin: 30px 0 0;
+  font-family: var(--mono);
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
